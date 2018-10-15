@@ -15,15 +15,18 @@ h1 {
 }
 
 .grid-container {
-  border-left: solid #000 1px;
-  border-right: solid #000 1px;
-  height: 100%;
-  background-image: url("../images/trivia-bg.jpg");
-  background-size:     cover;
-  background-repeat:   no-repeat;
-  background-position: center center; 
   padding: 0px;
   margin: auto;
+}
+
+.init-container {
+  border-left: solid #000 1px;
+  border-right: solid #000 1px;
+  background-image: url("../images/trivia-bg.jpg");
+  background-size:     cover;
+  background-repeat:   repeat-y;
+  background-position: center center;  
+  min-height: 100%;
 }
 
 .screen-category {
@@ -40,6 +43,10 @@ h1 {
 
 .screen-loading {
   display: none;
+  margin: auto;
+  color: #fff;
+  font-size: 100px;
+  text-align: center;
 }
 
 .screen-game {
@@ -48,7 +55,7 @@ h1 {
 
 .icons {
   padding: 30px;
-  margin: 25px;
+  margin: 10px;
   border-width: 3px;
   border-style: dashed;
   background-color: #fff;
@@ -62,6 +69,34 @@ h1 {
 
 .icons i:hover {
   transform: scale(1.25);
+}
+
+.select-choice {
+  background-color: #fff;
+  margin-bottom: 25px;
+}
+
+.button-group input{
+  display: none;
+}
+
+.button-group input:checked + label,
+.button-group input:checked + label:active {
+  background-color: #fc9626;
+}
+
+.button-group label {
+  text-align: left;
+}
+
+.button-group, .game-question, .game-submit {
+  padding: 5px;
+  line-height: 40px;
+}
+
+.button {
+  line-height: 40px;
+  background-color: #1db1f6
 }
 
 #icon-film {
