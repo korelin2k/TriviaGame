@@ -1,0 +1,81 @@
+body,html {
+  max-width: 800px;
+  margin: auto;
+  height: 100%;
+}
+
+h1 {
+  width: 100%;
+  background-color: #fff;
+  padding: 0px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+}
+
+.grid-container {
+  border-left: solid #000 1px;
+  border-right: solid #000 1px;
+  height: 100%;
+  background-image: url("../images/trivia-bg.jpg");
+  background-size:     cover;
+  background-repeat:   no-repeat;
+  background-position: center center; 
+  padding: 0px;
+  margin: auto;
+}
+
+.screen-category {
+  display: visible;
+}
+
+.category-selection {
+  font-size: 150px;
+}
+
+.cell-center {
+  text-align: center;
+}
+
+.screen-loading {
+  display: none;
+}
+
+.screen-game {
+  display: none;
+}
+
+.icons {
+  padding: 30px;
+  margin: 25px;
+  border-width: 3px;
+  border-style: dashed;
+  background-color: #fff;
+  position: relative;
+}
+
+.has-tip {
+  cursor: pointer;
+  border-bottom: 0px;
+}
+
+.icons i:hover {
+  transform: scale(1.25);
+}
+
+#icon-film {
+  color: #740c0f;
+}
+
+#icon-music {
+  color: #1db1f6
+}
+
+#icon-games {
+  color: #fc9626;
+}
+
+#icon-geo {
+  color: #fee934;
+}
