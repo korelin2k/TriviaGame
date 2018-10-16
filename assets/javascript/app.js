@@ -40,6 +40,9 @@ let gameQuestions = {
         gameOptions = gameQuestions.listOfQuestions[gameIndex].incorrect_answers;
         gameOptions.push(gameQuestions.listOfQuestions[gameIndex].correct_answer);
 
+        // Need to randomize the array now, otherwise the answer is always the last one...
+        gameOptions = shuffle(gameOptions);
+
         return gameOptions;
     },
 
@@ -107,6 +110,7 @@ let gamePlay = {
     // Shows the game question screen (primary screen)
     showGameQuestionScreen: function() {
         if (gameQuestions.currentIndex < gameQuestions.totalQuestions) {
+            let validGameOptions = gameQuestions.returnOptions();
 
             // Set & Reset data
             gamePlay.overallTimeLeft = gamePlay.overallTime;
@@ -121,9 +125,9 @@ let gamePlay = {
             $('.game-question').html('<i class="fa ' + gamePlay.categoryIcon + '" id="Geography" aria-hidden="true"></i> ' + gameQuestions.returnQuestion());
 
             // Define the questions and append them to the selection
-            for (i in gameQuestions.returnOptions()) {
+            for (i in validGameOptions) {
                 let inputFieldElement = $('<input type="radio" id="game-' + i + '" name="g-group">');
-                let labelFieldElement = $('<label class="button selected-answer" for="game-' + i + '" value="' + stringReplaceSpecialCharacters(gameQuestions.returnOptions()[i]) + '">' + gameQuestions.returnOptions()[i] + '</label>');  
+                let labelFieldElement = $('<label class="button selected-answer" for="game-' + i + '" value="' + stringReplaceSpecialCharacters(validGameOptions[i]) + '">' + validGameOptions[i] + '</label>');  
                 
                 gameChoicesElement.append(inputFieldElement);
                 gameChoicesElement.append(labelFieldElement);
@@ -253,3 +257,26 @@ function stringReplaceSpecialCharacters(stringInput) {
 
     return stringInput;
 }
+
+// Need to shuffle the answer order, or else it would always be the last one
+//
+// Found this snippet of code here:
+// https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+function shuffle(array) {
+    var currentIndex = array.length, temporaryValue, randomIndex;
+  
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+  
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+  
+      // And swap it with the current element.
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+  
+    return array;
+  }
