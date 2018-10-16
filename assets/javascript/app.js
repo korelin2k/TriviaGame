@@ -205,10 +205,10 @@ let gamePlay = {
             $('.round-over').html('<div class="cell-center"><img src="assets/images/winner-logo.png" width="400" /></div><div class="cell-center">Time left: ' + clock.timeLeft + ' seconds</div>')
             gamePlay.overallWinTotal++;
         } else if (result === 'loser') {
-            $('.round-over').html('<div class="cell-center"><img src="assets/images/failed-logo.png" width="400" /><div><div class="cell-center"><h3>Correct Answer: ' + gameQuestions.returnAnswer() + '</h3></div><div class="cell-center">Time left: ' + clock.timeLeft + ' seconds</div>')
+            $('.round-over').html('<div class="cell-center"><img src="assets/images/rejected.png" width="400" /><div><div class="cell-center"><h3>Correct Answer: ' + gameQuestions.returnAnswer() + '</h3></div><div class="cell-center">Time left: ' + clock.timeLeft + ' seconds</div>')
             gamePlay.overallLossTotal++;
         } else if (result === 'timeup') {
-            $('.round-over').html('<div class="cell-center"><img src="assets/images/time-logo.png" width="400" /></div><div><h3 class="cell-center">Correct Answer: ' + gameQuestions.returnAnswer() + '</h3></div><div class="cell-center">Time left: ' + clock.timeLeft + ' seconds</div>')
+            $('.round-over').html('<div class="cell-center"><img src="assets/images/alarm.jpg" width="400" /></div><div><h3 class="cell-center">Correct Answer: ' + gameQuestions.returnAnswer() + '</h3></div><div class="cell-center">Time left: ' + clock.timeLeft + ' seconds</div>')
             gamePlay.overallLossTotal++;
         } else {
             console.log('How did you get here?');
