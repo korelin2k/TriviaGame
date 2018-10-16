@@ -1,7 +1,7 @@
-var gameQuestions = {
+let gameQuestions = {
     listOfQuestions: {},
     currentIndex: 0,
-    totalQuestions: 5,
+    totalQuestions: 10,
 
     generateQuestions: function(gameCategory) {
         // Found a terrific API for generating trivia questions
@@ -18,9 +18,6 @@ var gameQuestions = {
                 gameQuestions.listOfQuestions = responseQuestions;
 
                 gamePlay.showGameQuestionScreen();
-            },
-            complete:function(data){
-                // game.generateBoard();
             }
         });
     },
@@ -53,7 +50,7 @@ var gameQuestions = {
     }
 }
 
-var gamePlay = {
+let gamePlay = {
     overallWinTotal: 0,
     overallLossTotal: 0,
     categoryIcon: "",
@@ -118,6 +115,7 @@ var gamePlay = {
 
             gamePlay.roundTimer = setTimeout(function() { gamePlay.showRoundOverScreen('timeup'); }, gamePlay.overallTime);
             gamePlay.intervalTimer = setInterval(() => gamePlay.incrementTimerBar(), 1000);
+            $('.game-bar-status').css('width', '0%');
 
             $('.selected-answer').click(function() {
                 clearTimeout(gamePlay.roundTimer);
@@ -134,14 +132,9 @@ var gamePlay = {
 
     incrementTimerBar: function() {
         const incrementalTime = 1000;
-        let incrementalTimePercent = '100%';
         let incrementalTimeNumber = 10;
         gamePlay.overallTimeLeft = gamePlay.overallTimeLeft - incrementalTime;
         incrementalTimeNumber = gamePlay.overallTimeLeft / 1000;
-        incrementalTimePercent = (((gamePlay.overallTimeLeft / gamePlay.overallTime) * 100) + '%');
-
-        let incrementalBar = $('.game-bar-status');
-        $('.game-bar-status').css('width', incrementalTimePercent);
         $('.game-seconds').text(incrementalTimeNumber);
     },
 
@@ -149,13 +142,13 @@ var gamePlay = {
         clearTimeout(gamePlay.intervalTimer);
 
         if(result === 'winner') {
-            $('.round-over').html('<div><h1>Winner Winner Chicken Dinner!</h1></div>')
+            $('.round-over').html('<div class="cell-center"><img src="assets/images/winner-logo.png" width="400" /></div>')
             gamePlay.overallWinTotal++;
         } else if (result === 'loser') {
-            $('.round-over').html('<div><h1>Better Luck Next time!</h1></div><div><h3>Correct Answer: ' + gameQuestions.returnAnswer() + '</h3></div>')
+            $('.round-over').html('<div class="cell-center"><img src="assets/images/failed-logo.png" width="400" /><div><div class="cell-center"><h3>Correct Answer: ' + gameQuestions.returnAnswer() + '</h3></div>')
             gamePlay.overallLossTotal++;
         } else if (result === 'timeup') {
-            $('.round-over').html('<div><h1>Too Slow!</h1></div><div><h3>Correct Answer: ' + gameQuestions.returnAnswer() + '</h3></div>')
+            $('.round-over').html('<div class="cell-center"><img src="assets/images/time-logo.png" width="400" /></div><div><h3 class="cell-center">Correct Answer: ' + gameQuestions.returnAnswer() + '</h3></div>')
             gamePlay.overallLossTotal++;
         } else {
             console.log('How did you get here?');

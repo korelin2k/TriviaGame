@@ -145,6 +145,9 @@ h1 {
   margin: 0px;
   white-space: nowrap;
   font-weight: bold;
+  transition-property: width;
+  transition-duration: 10s;
+  transition-timing-function: linear;
 }
 
 #icon-film {
