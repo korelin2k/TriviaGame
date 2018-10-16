@@ -1,7 +1,7 @@
 let gameQuestions = {
     listOfQuestions: {},
     currentIndex: 0,
-    totalQuestions: 10,
+    totalQuestions: 2,
 
     generateQuestions: function(gameCategory) {
         // Found a terrific API for generating trivia questions
@@ -170,9 +170,18 @@ let gamePlay = {
         $('.screen-game-over').show();
 
         $('.restart-game').click(function() {
-            console.log('restart');
-            location.reload();
+            gamePlay.restartGame();
         });
+    },
+
+    restartGame: function() {
+        gameQuestions.listOfQuestions = {};
+        gameQuestions.currentIndex = 0;
+        gamePlay.overallLossTotal = 0;
+        gamePlay.overallWinTotal = 0;
+
+        $('.screen-game-over').hide();
+        $('.screen-category').show();
     },
 
     checkSelection: function(answer) {
