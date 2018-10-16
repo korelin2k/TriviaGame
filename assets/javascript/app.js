@@ -1,7 +1,7 @@
 let gameQuestions = {
     listOfQuestions: {},
     currentIndex: 0,
-    totalQuestions: 2,
+    totalQuestions: 10,
 
     generateQuestions: function(gameCategory) {
         // Found a terrific API for generating trivia questions
