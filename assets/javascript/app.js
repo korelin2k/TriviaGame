@@ -1,10 +1,11 @@
 var gameQuestions = {
     listOfQuestions: {},
     currentIndex: 0,
+    totalQuestions: 5,
 
     generateQuestions: function(gameCategory) {
         // Found a terrific API for generating trivia questions
-        let endPointforTriviaAPI = 'https://opentdb.com/api.php?amount=10&category=' + gameCategory + '&difficulty=easy&type=multiple';
+        let endPointforTriviaAPI = 'https://opentdb.com/api.php?amount=' + gameQuestions.totalQuestions + '&category=' + gameCategory + '&difficulty=easy&type=multiple';
 
         $.ajax({
             url: endPointforTriviaAPI,
@@ -96,22 +97,82 @@ var gamePlay = {
     },
 
     showGameQuestionScreen: function() {
-        let gameChoicesElement = $(".game-choices");
+        if (gameQuestions.currentIndex < gameQuestions.totalQuestions) {
+            let gameChoicesElement = $(".game-choices");
+            gameChoicesElement.empty();
 
-        $('.game-question').html(gameQuestions.returnQuestion());
+            $('.game-question').html('<i class="fa fa-map-signs ' + gamePlay.categoryIcon + '" id="Geography" aria-hidden="true"></i> ' + gameQuestions.returnQuestion());
 
-        for (i in gameQuestions.returnOptions()) {
-            console.log(i);
-            console.log(gameQuestions.returnOptions()[i]);
-            let inputFieldElement = $('<input type="radio" id="game-' + i + '" name="g-group">');
-            let labelFieldElement = $('<label class="button" for="game-' + i + '">' + gameQuestions.returnOptions()[i] + '</label>');  
-            
-            gameChoicesElement.append(inputFieldElement);
-            gameChoicesElement.append(labelFieldElement);
+            for (i in gameQuestions.returnOptions()) {
+                console.log(i);
+                console.log(gameQuestions.returnOptions()[i]);
+                let inputFieldElement = $('<input type="radio" id="game-' + i + '" name="g-group">');
+                let labelFieldElement = $('<label class="button selected-answer" for="game-' + i + '" value="' + gameQuestions.returnOptions()[i] + '">' + gameQuestions.returnOptions()[i] + '</label>');  
+                
+                gameChoicesElement.append(inputFieldElement);
+                gameChoicesElement.append(labelFieldElement);
+            }
+
+            $('.screen-round-over').hide();
+            $('.screen-loading').hide();
+            $('.screen-game').show();
+
+            $('.selected-answer').click(function() {
+                let playerAnswer = $(this).attr("value");
+                roundResult = gamePlay.checkSelection(playerAnswer);
+
+                gamePlay.showRoundOverScreen(roundResult);
+            });
+        } else {
+            gamePlay.showGameOverScreen();
+        }
+    },
+
+    showRoundOverScreen: function(result) {
+        if(result === 'winner') {
+            $('.round-over').html('<div><h1>Winner Winner Chicken Dinner!</h1></div>')
+            gamePlay.overallWinTotal++;
+        } else if (result === 'loser') {
+            $('.round-over').html('<div><h1>Better Luck Next time!</h1></div><div><h3>Correct Answer: ' + gameQuestions.returnAnswer() + '</h3></div>')
+            gamePlay.overallLossTotal++;
+        } else if (result === 'timeup') {
+            $('.round-over').html('<div><h1>Too Slow!</h1></div><div><h3>Correct Answer: ' + gameQuestions.returnAnswer() + '</h3></div>')
+            gamePlay.overallLossTotal++;
+        } else {
+            console.log('How did you get here?');
         }
 
+        $('.screen-game').hide();
+        $('.screen-round-over').show();
+
+        setTimeout(function() { gamePlay.showGameQuestionScreen(); }, 3000);
+        gameQuestions.iterateQuestionIndex();
+    },
+
+    showGameOverScreen: function() {
+        $('.round-wins').text('Wins: ' + gamePlay.overallWinTotal);
+        $('.round-losses').text('Losses: ' + gamePlay.overallLossTotal);
+
+        $('.screen-round-over').hide();
         $('.screen-loading').hide();
-        $('.screen-game').show();
+        $('.screen-game-over').show();
+
+        $('.restart-game').click(function() {
+            console.log('restart');
+            location.reload();
+        });
+    },
+
+    checkSelection: function(answer) {
+        let checkResult = ""
+
+        if (answer === gameQuestions.returnAnswer()) {
+            checkResult = 'winner';
+        } else {
+            checkResult = 'loser';
+        }
+
+        return checkResult;
     }
 }
 
@@ -122,5 +183,5 @@ $( document ).ready(function() {
     $('.icons').click(function() {
         let gameCategoryString = $(this).attr("id");
         gamePlay.startGame(gameCategoryString);
-    });
+    });    
 });

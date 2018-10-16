@@ -53,6 +53,14 @@ h1 {
   display: none;
 }
 
+.screen-round-over {
+  display: none;
+}
+
+.screen-game-over {
+  display: none;
+}
+
 .icons {
   padding: 30px;
   margin: 10px;
@@ -97,6 +105,30 @@ h1 {
 .button {
   line-height: 40px;
   background-color: #1db1f6
+}
+
+.game-over {
+  width: 100%;
+  padding: 25px;
+  margin: 15px 0 15px 0;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+
+.game-over span {
+  padding: 25px 10px 25px 10px;
+  margin: 10px 0 10px 0;
+  width: 100%;
+  font-size: 25px;
+}
+
+.round-over {
+  width: 100%;
+  padding: 25px;
+  margin: 15px 0 15px 0;
+  font-size: 25px;
+  background-color: #fff;
+  box-sizing: border-box;
 }
 
 #icon-film {
