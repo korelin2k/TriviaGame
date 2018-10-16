@@ -59,7 +59,7 @@ var gamePlay = {
     categoryIcon: "",
     roundTimer: "",
     intervalTimer: "",
-    overallTime: 15000,
+    overallTime: 10000,
     overallTimeLeft: 0,
 
     startGame: function(gameCategoryString) {
@@ -89,10 +89,6 @@ var gamePlay = {
         gameQuestions.generateQuestions(gameCategoryID);
     },
 
-    endGame: function() {
-
-    },
-
     showGameLoadingScreen: function() {
         $('.screen-category').hide();
         $('.screen-loading').show();
@@ -102,13 +98,15 @@ var gamePlay = {
         if (gameQuestions.currentIndex < gameQuestions.totalQuestions) {
             gamePlay.overallTimeLeft = gamePlay.overallTime;
             let gameChoicesElement = $(".game-choices");
+            $('.game-bar-status').css('width', '100%');
+            $('.game-seconds').text('10');
             gameChoicesElement.empty();
 
             $('.game-question').html('<i class="fa ' + gamePlay.categoryIcon + '" id="Geography" aria-hidden="true"></i> ' + gameQuestions.returnQuestion());
 
             for (i in gameQuestions.returnOptions()) {
                 let inputFieldElement = $('<input type="radio" id="game-' + i + '" name="g-group">');
-                let labelFieldElement = $('<label class="button selected-answer" for="game-' + i + '" value="' + gameQuestions.returnOptions()[i] + '">' + gameQuestions.returnOptions()[i] + '</label>');  
+                let labelFieldElement = $('<label class="button selected-answer" for="game-' + i + '" value="' + stringReplaceSpecialCharacters(gameQuestions.returnOptions()[i]) + '">' + gameQuestions.returnOptions()[i] + '</label>');  
                 
                 gameChoicesElement.append(inputFieldElement);
                 gameChoicesElement.append(labelFieldElement);
@@ -136,9 +134,15 @@ var gamePlay = {
 
     incrementTimerBar: function() {
         const incrementalTime = 1000;
-        gamePlay.overallTimeLeft = (gamePlay.overallTimeLeft - incrementalTime);
+        let incrementalTimePercent = '100%';
+        let incrementalTimeNumber = 10;
+        gamePlay.overallTimeLeft = gamePlay.overallTimeLeft - incrementalTime;
+        incrementalTimeNumber = gamePlay.overallTimeLeft / 1000;
+        incrementalTimePercent = (((gamePlay.overallTimeLeft / gamePlay.overallTime) * 100) + '%');
 
-        console.log("Here: " + gamePlay.overallTimeLeft);
+        let incrementalBar = $('.game-bar-status');
+        $('.game-bar-status').css('width', incrementalTimePercent);
+        $('.game-seconds').text(incrementalTimeNumber);
     },
 
     showRoundOverScreen: function(result) {
@@ -181,7 +185,7 @@ var gamePlay = {
     checkSelection: function(answer) {
         let checkResult = ""
 
-        if (answer === gameQuestions.returnAnswer()) {
+        if (answer === stringReplaceSpecialCharacters(gameQuestions.returnAnswer())) {
             checkResult = 'winner';
         } else {
             checkResult = 'loser';
@@ -200,3 +204,10 @@ $( document ).ready(function() {
         gamePlay.startGame(gameCategoryString);
     });    
 });
+
+// Special characters suck - quick function to strip those and only used for the comparison
+function stringReplaceSpecialCharacters(stringInput) {
+    stringInput = stringInput.replace(/[^a-zA-Z0-9]/g,'_');
+
+    return stringInput;
+}

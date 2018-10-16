@@ -97,7 +97,7 @@ h1 {
   text-align: left;
 }
 
-.button-group, .game-question, .game-submit {
+.button-group, .game-question, .game-submit, .game-bar {
   padding: 5px;
   line-height: 40px;
 }
@@ -129,6 +129,22 @@ h1 {
   font-size: 25px;
   background-color: #fff;
   box-sizing: border-box;
+}
+
+.game-bar {
+  margin: 5px;
+  padding: 0px;
+  box-sizing: border-box;
+  border: solid #000 1px;
+}
+
+.game-bar-status {
+  background-color: #1db1f6;
+  width: 100%;
+  padding: 5px 15px 5px 15px;
+  margin: 0px;
+  white-space: nowrap;
+  font-weight: bold;
 }
 
 #icon-film {
