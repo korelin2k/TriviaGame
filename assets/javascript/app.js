@@ -51,14 +51,16 @@ var gameQuestions = {
     iterateQuestionIndex: function() {
         gameQuestions.currentIndex++;
     }
-
-
 }
 
 var gamePlay = {
     overallWinTotal: 0,
     overallLossTotal: 0,
     categoryIcon: "",
+    roundTimer: "",
+    intervalTimer: "",
+    overallTime: 15000,
+    overallTimeLeft: 0,
 
     startGame: function(gameCategoryString) {
         let gameCategoryID = 0;
@@ -98,14 +100,13 @@ var gamePlay = {
 
     showGameQuestionScreen: function() {
         if (gameQuestions.currentIndex < gameQuestions.totalQuestions) {
+            gamePlay.overallTimeLeft = gamePlay.overallTime;
             let gameChoicesElement = $(".game-choices");
             gameChoicesElement.empty();
 
-            $('.game-question').html('<i class="fa fa-map-signs ' + gamePlay.categoryIcon + '" id="Geography" aria-hidden="true"></i> ' + gameQuestions.returnQuestion());
+            $('.game-question').html('<i class="fa ' + gamePlay.categoryIcon + '" id="Geography" aria-hidden="true"></i> ' + gameQuestions.returnQuestion());
 
             for (i in gameQuestions.returnOptions()) {
-                console.log(i);
-                console.log(gameQuestions.returnOptions()[i]);
                 let inputFieldElement = $('<input type="radio" id="game-' + i + '" name="g-group">');
                 let labelFieldElement = $('<label class="button selected-answer" for="game-' + i + '" value="' + gameQuestions.returnOptions()[i] + '">' + gameQuestions.returnOptions()[i] + '</label>');  
                 
@@ -117,7 +118,12 @@ var gamePlay = {
             $('.screen-loading').hide();
             $('.screen-game').show();
 
+            gamePlay.roundTimer = setTimeout(function() { gamePlay.showRoundOverScreen('timeup'); }, gamePlay.overallTime);
+            gamePlay.intervalTimer = setInterval(() => gamePlay.incrementTimerBar(), 1000);
+
             $('.selected-answer').click(function() {
+                clearTimeout(gamePlay.roundTimer);
+                clearTimeout(gamePlay.intervalTimer);
                 let playerAnswer = $(this).attr("value");
                 roundResult = gamePlay.checkSelection(playerAnswer);
 
@@ -128,7 +134,16 @@ var gamePlay = {
         }
     },
 
+    incrementTimerBar: function() {
+        const incrementalTime = 1000;
+        gamePlay.overallTimeLeft = (gamePlay.overallTimeLeft - incrementalTime);
+
+        console.log("Here: " + gamePlay.overallTimeLeft);
+    },
+
     showRoundOverScreen: function(result) {
+        clearTimeout(gamePlay.intervalTimer);
+
         if(result === 'winner') {
             $('.round-over').html('<div><h1>Winner Winner Chicken Dinner!</h1></div>')
             gamePlay.overallWinTotal++;
