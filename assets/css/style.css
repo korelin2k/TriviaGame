@@ -141,13 +141,19 @@ h1 {
 .game-bar-status {
   background-color: #1db1f6;
   width: 100%;
-  padding: 5px 15px 5px 15px;
+  padding: 5px 0px 5px 0px;
   margin: 0px;
   white-space: nowrap;
   font-weight: bold;
   transition-property: width;
   transition-duration: 10s;
   transition-timing-function: linear;
+}
+
+.game-seconds {
+  bottom: 0px;
+  left: 0px;
+  margin-left: 15px;
 }
 
 #icon-film {

@@ -60,16 +60,55 @@ let gameQuestions = {
     }
 }
 
+let clock = {
+    intervalTimer: "",
+    timeLeft: "",
+    overallTime: 10000,
+    overallTimeLeft: 0,
+
+    start: function() {
+        clock.intervalTimer = setInterval(() => clock.incrementTimerBar(), 1000);
+    },
+
+    pause: function() {
+        clearTimeout(clock.intervalTimer);
+    },
+
+    clear: function() {
+        clearTimeout(clock.intervalTimer);
+    },
+
+    reset: function() {
+        clock.overallTimeLeft = 0;
+        clearTimeout(clock.intervalTimer);
+        clock.overallTimeLeft = clock.overallTime;
+        $('.game-seconds').text('10');
+    },
+
+    incrementTimerBar: function() {
+        const incrementalTime = 1000;
+        let incrementalTimeNumber = 0;
+        clock.overallTimeLeft = clock.overallTimeLeft - incrementalTime;
+        incrementalTimeNumber = clock.overallTimeLeft / 1000;
+        $('.game-seconds').text(incrementalTimeNumber); 
+        clock.timeLeft = incrementalTimeNumber; 
+        
+        if(incrementalTimeNumber == '0') {
+            gamePlay.showRoundOverScreen('timeup');
+        }
+    },
+
+    screenWait: function() {
+        setTimeout(function() { gamePlay.showGameQuestionScreen(); }, 3000);
+    }
+}
+
 // Gameplay object
 // Used for all aspects of the game, and is heavily integrated in calling the question object above
 let gamePlay = {
     overallWinTotal: 0,
     overallLossTotal: 0,
     categoryIcon: "",
-    roundTimer: "",
-    intervalTimer: "",
-    overallTime: 10000,
-    overallTimeLeft: 0,
 
     // Initiates the game by finding out the category selected and calling the generateQuestions API
     startGame: function(gameCategoryString) {
@@ -113,10 +152,9 @@ let gamePlay = {
             let validGameOptions = gameQuestions.returnOptions();
 
             // Set & Reset data
-            gamePlay.overallTimeLeft = gamePlay.overallTime;
+            clock.reset();
             let gameChoicesElement = $(".game-choices");
             $('.game-bar-status').css('width', '100%');
-            $('.game-seconds').text('10');
 
             // Empty out what was set before
             gameChoicesElement.empty();
@@ -139,16 +177,14 @@ let gamePlay = {
             $('.screen-game').show();
 
             // Define and set timers
-            gamePlay.roundTimer = setTimeout(function() { gamePlay.showRoundOverScreen('timeup'); }, gamePlay.overallTime);
-            gamePlay.intervalTimer = setInterval(() => gamePlay.incrementTimerBar(), 1000);
+            clock.start();
 
             // Slow crawl down to 0 with the transition parameter in the CSS (simple!)
             $('.game-bar-status').css('width', '0%');
 
             // Once the answer is selected, get the value and then send it over to the compare function
             $('.selected-answer').click(function() {
-                clearTimeout(gamePlay.roundTimer);
-                clearTimeout(gamePlay.intervalTimer);
+                clock.clear();
                 let playerAnswer = $(this).attr("value");
                 roundResult = gamePlay.checkSelection(playerAnswer);
 
@@ -162,28 +198,17 @@ let gamePlay = {
         }
     },
 
-    // Increment the timer on the bar
-    incrementTimerBar: function() {
-        const incrementalTime = 1000;
-        let incrementalTimeNumber = 10;
-        gamePlay.overallTimeLeft = gamePlay.overallTimeLeft - incrementalTime;
-        incrementalTimeNumber = gamePlay.overallTimeLeft / 1000;
-        $('.game-seconds').text(incrementalTimeNumber);
-    },
-
     // Show the round over screen based on the type of result
     showRoundOverScreen: function(result) {
-        clearTimeout(gamePlay.intervalTimer);
-
         // Set the proper screen based off the result passed in
         if(result === 'winner') {
-            $('.round-over').html('<div class="cell-center"><img src="assets/images/winner-logo.png" width="400" /></div>')
+            $('.round-over').html('<div class="cell-center"><img src="assets/images/winner-logo.png" width="400" /></div><div class="cell-center">Time left: ' + clock.timeLeft + ' seconds</div>')
             gamePlay.overallWinTotal++;
         } else if (result === 'loser') {
-            $('.round-over').html('<div class="cell-center"><img src="assets/images/failed-logo.png" width="400" /><div><div class="cell-center"><h3>Correct Answer: ' + gameQuestions.returnAnswer() + '</h3></div>')
+            $('.round-over').html('<div class="cell-center"><img src="assets/images/failed-logo.png" width="400" /><div><div class="cell-center"><h3>Correct Answer: ' + gameQuestions.returnAnswer() + '</h3></div><div class="cell-center">Time left: ' + clock.timeLeft + ' seconds</div>')
             gamePlay.overallLossTotal++;
         } else if (result === 'timeup') {
-            $('.round-over').html('<div class="cell-center"><img src="assets/images/time-logo.png" width="400" /></div><div><h3 class="cell-center">Correct Answer: ' + gameQuestions.returnAnswer() + '</h3></div>')
+            $('.round-over').html('<div class="cell-center"><img src="assets/images/time-logo.png" width="400" /></div><div><h3 class="cell-center">Correct Answer: ' + gameQuestions.returnAnswer() + '</h3></div><div class="cell-center">Time left: ' + clock.timeLeft + ' seconds</div>')
             gamePlay.overallLossTotal++;
         } else {
             console.log('How did you get here?');
@@ -194,7 +219,7 @@ let gamePlay = {
         $('.screen-round-over').show();
 
         // Timeout is used for how long do you wait before you jump to the next question
-        setTimeout(function() { gamePlay.showGameQuestionScreen(); }, 3000);
+        clock.screenWait();
 
         // Add 1 to the current index of the question
         gameQuestions.iterateQuestionIndex();
