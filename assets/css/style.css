@@ -34,7 +34,7 @@ h1 {
 }
 
 .category-selection {
-  font-size: 150px;
+  font-size: 75px;
 }
 
 .cell-center {
@@ -99,11 +99,11 @@ h1 {
 
 .button-group, .game-question, .game-submit, .game-bar {
   padding: 5px;
-  line-height: 40px;
+  line-height: 30px;
 }
 
 .button {
-  line-height: 40px;
+  line-height: 30px;
   background-color: #1db1f6
 }
 

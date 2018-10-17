@@ -21,7 +21,11 @@ let gameQuestions = {
                 gameQuestions.listOfQuestions = responseQuestions;
 
                 gamePlay.showGameQuestionScreen();
-            }
+            },
+            error: function() {
+                console.log('API service is non-responsive');
+            },
+            timeout: 10000
         });
     },
 
