@@ -60,24 +60,25 @@ let gameQuestions = {
     }
 }
 
+// Clock object
+// All timer functions used in this app is built here
 let clock = {
     intervalTimer: "",
     timeLeft: "",
     overallTime: 10000,
     overallTimeLeft: 0,
 
+    // On your marks, get set, go!
     start: function() {
         clock.intervalTimer = setInterval(() => clock.incrementTimerBar(), 1000);
     },
 
-    pause: function() {
-        clearTimeout(clock.intervalTimer);
-    },
-
+    // Clear the timer!
     clear: function() {
         clearTimeout(clock.intervalTimer);
     },
 
+    // Reset the values and timer
     reset: function() {
         clock.overallTimeLeft = 0;
         clearTimeout(clock.intervalTimer);
@@ -85,6 +86,7 @@ let clock = {
         $('.game-seconds').text('10');
     },
 
+    // Increment and move the bar
     incrementTimerBar: function() {
         const incrementalTime = 1000;
         let incrementalTimeNumber = 0;
@@ -98,6 +100,7 @@ let clock = {
         }
     },
 
+    // Wait for the results screen and then go away
     screenWait: function() {
         setTimeout(function() { gamePlay.showGameQuestionScreen(); }, 3000);
     }
