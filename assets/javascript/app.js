@@ -149,6 +149,7 @@ let gamePlay = {
 
     // Shows the game loading screen
     showGameLoadingScreen: function() {
+        $('.has-tip').foundation('hide');
         $('.screen-category').hide();
         $('.screen-loading').show();
     },
