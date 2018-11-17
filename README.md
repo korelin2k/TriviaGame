@@ -21,3 +21,6 @@ Selected the "Advanced" Assignment which was the timed Trivia Questions. Overall
 1. Heard feedback from Richard to the class on making sure our variables were named better - cleaned those up
 2. Cleaned up my methods, smaller and more manageable
 3. No more use of "var" - used "let" and "const", where appropriate
+
+### Linkage
+https://korelin2k.github.io/TriviaGame/index.html

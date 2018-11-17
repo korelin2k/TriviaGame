@@ -19,7 +19,6 @@ let gameQuestions = {
             success: function(response){
                 let responseQuestions = response.results;
                 gameQuestions.listOfQuestions = responseQuestions;
-
                 gamePlay.showGameQuestionScreen();
             },
             error: function() {
